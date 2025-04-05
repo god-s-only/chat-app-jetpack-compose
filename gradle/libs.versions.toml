@@ -7,7 +7,12 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2024.09.00"
+composeBom = "2025.03.01"
+dagger-hilt = "2.51"
+firebaseCrashlyticsBuildTools = "3.0.3"
+hilt-compose = "1.2.0"
+coil = "2.6.0"
+material3Android = "1.3.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,9 +29,18 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+dagger-hilt-android = {module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt"}
+dagger-hilt-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger-hilt"}
+dagger-hilt-compose = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-compose"}
+firebase-crashlytics-buildtools = {group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildTools"}
+coil = {module = "io.coil-kt:coil-compose", version.ref = "coil"}
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android"}
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt"}
 

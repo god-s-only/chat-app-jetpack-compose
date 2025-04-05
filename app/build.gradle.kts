@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.dagger.hilt)
+    kotlin("kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -49,6 +52,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.dagger.hilt.compose)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.dagger.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,4 +63,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+
+    // Add the dependency for the Realtime Database library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-firestore")
+    kapt(libs.dagger.hilt.compiler)
+    implementation(libs.coil)
 }
