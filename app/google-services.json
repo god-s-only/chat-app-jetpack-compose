@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "319658697915",
+    "project_id": "social-media-2f8e1",
+    "storage_bucket": "social-media-2f8e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319658697915:android:aaec856169d543cd2ab59e",
+        "android_client_info": {
+          "package_name": "com.example.chattingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXN8GvVJvxZVhX7dVPuluXc5HHkUMte10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319658697915:android:e927b377046976f82ab59e",
+        "android_client_info": {
+          "package_name": "com.ogbodo.socialmedia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXN8GvVJvxZVhX7dVPuluXc5HHkUMte10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
