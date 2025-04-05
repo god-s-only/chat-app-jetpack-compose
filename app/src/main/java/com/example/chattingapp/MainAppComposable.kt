@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.chattingapp.feature.auth.signin.SignInScreen
 import com.example.chattingapp.feature.auth.signup.SignUpScreen
+import com.example.chattingapp.feature.home.HomeScreen
 
 @Composable
 fun MainApp(){
@@ -21,6 +22,9 @@ fun MainApp(){
             }
             composable("signup") {
                 SignUpScreen(navController)
+            }
+            composable("homescreen"){
+                HomeScreen(navController)
             }
         }
     }

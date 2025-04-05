@@ -54,17 +54,18 @@ fun SignUpScreen(navController: NavController){
             OutlinedTextField(value = fullName, onValueChange = {fullName = it}, label = {Text(text = "Full Name")}, modifier = Modifier.fillMaxWidth())
             OutlinedTextField(value = email, onValueChange = {email = it}, label = {Text(text = "Email")}, modifier = Modifier.fillMaxWidth())
             OutlinedTextField(value = password, onValueChange = {password = it}, visualTransformation = PasswordVisualTransformation(),label = {Text(text = "Password")}, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(value = cPassword, onValueChange = {cPassword = it}, visualTransformation = PasswordVisualTransformation(),label = {Text(text = "Confirm Password")}, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = cPassword, onValueChange = {cPassword = it}, visualTransformation = PasswordVisualTransformation(),label = {Text(text = "Confirm Password")}, isError = password != cPassword && password.isEmpty() && cPassword.isEmpty() ,modifier = Modifier.fillMaxWidth())
             Spacer(
                 modifier = Modifier.height(20.dp)
             )
             Button(
                 onClick = {},
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = password.isNotEmpty() && cPassword.isNotEmpty() && email.isNotEmpty() && fullName.isNotEmpty() && password == cPassword
             ) {
                 Text(text = "Sign Up")
             }
-            TextButton(onClick = {}) {
+            TextButton(onClick = {navController.popBackStack()}) {
                 Text(text = "Already have an account? Sign In", color = Color.Gray)
             }
         }
