@@ -110,8 +110,7 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
-
+            modifier = Modifier.fillMaxWidth().background(Color.White),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
@@ -124,7 +123,7 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
                 singleLine = true
             )
             Spacer(modifier = Modifier.padding(16.dp))
-            Button(onClick = {onChannelAdd(channelName.value)}) {
+            Button(onClick = {onChannelAdd(channelName.value)}, enabled = channelName.value.isNotEmpty()) {
                 Text(text = "Add Channel")
             }
         }
