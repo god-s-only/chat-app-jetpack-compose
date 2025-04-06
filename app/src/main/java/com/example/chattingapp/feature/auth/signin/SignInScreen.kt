@@ -49,6 +49,7 @@ fun SignInScreen(navController: NavController){
         when(uiState.value){
             is SignInState.Success -> {
                 navController.navigate("homescreen")
+                Toast.makeText(context, "Sign in successfully", Toast.LENGTH_LONG).show()
             }
             is SignInState.Error -> {
                 Toast.makeText(context, "Sign in failed", Toast.LENGTH_LONG).show()

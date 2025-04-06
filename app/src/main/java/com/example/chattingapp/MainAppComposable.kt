@@ -11,12 +11,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.chattingapp.feature.auth.signin.SignInScreen
 import com.example.chattingapp.feature.auth.signup.SignUpScreen
 import com.example.chattingapp.feature.home.HomeScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun MainApp(){
     Surface(modifier = Modifier.fillMaxSize()) {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "login"){
+        val start = if(FirebaseAuth.getInstance().currentUser != null) "homescreen" else "login"
+        NavHost(navController = navController, startDestination = start){
             composable("login") {
                 SignInScreen(navController)
             }
