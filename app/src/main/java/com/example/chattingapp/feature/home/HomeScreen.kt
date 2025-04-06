@@ -2,6 +2,7 @@ package com.example.chattingapp.feature.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,11 +19,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -37,21 +41,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.chattingapp.model.Channel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController){
-    var homeViewView = hiltViewModel<HomeViewModel>()
-    var channels = homeViewView.state.collectAsState()
+    var homeViewModel = hiltViewModel<HomeViewModel>()
+    var channels = homeViewModel.state.collectAsState()
+    var addChannel = remember {
+        mutableStateOf(false)
+    }
     Scaffold(floatingActionButton = {
         Box(
             modifier = Modifier.padding(16.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(Color.Blue)
                 .clickable{
-                    navController.navigate("add_channel")
+                    addChannel.value = true
                 }
         ){
             Text(text = "Add Channel", modifier = Modifier.padding(16.dp), color = Color.White)
@@ -66,6 +75,16 @@ fun HomeScreen(navController: NavController){
                         ChannelItems(channel.name, navController, channel)
                     }
                 }
+            }
+        }
+    }
+    if(addChannel.value){
+        ModalBottomSheet(onDismissRequest = {addChannel.value = false},
+            sheetState = rememberModalBottomSheetState()
+        ) {
+            AddChannelName {
+                homeViewModel.addChannel(it)
+                addChannel.value = false
             }
         }
     }
@@ -88,13 +107,15 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
     }
     Card(
         shape = RoundedCornerShape(8.dp),
-
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.background(Color.Blue),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth(),
+
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ){
-            Text(text = "Add Channel Name", color = Color.White, modifier = Modifier.padding(16.dp), fontWeight = FontWeight.Bold)
+            Text(text = "Add Channel Name", modifier = Modifier.padding(16.dp), fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.padding(16.dp))
             TextField(modifier = Modifier.fillMaxWidth(0.8f),
                 value = channelName.value,
@@ -102,6 +123,7 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
                 label = {Text(text = "Channel Name")},
                 singleLine = true
             )
+            Spacer(modifier = Modifier.padding(16.dp))
             Button(onClick = {onChannelAdd(channelName.value)}) {
                 Text(text = "Add Channel")
             }

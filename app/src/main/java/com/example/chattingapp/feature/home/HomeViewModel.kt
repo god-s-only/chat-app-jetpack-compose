@@ -28,4 +28,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             _state.value = list
         }
     }
+    fun addChannel(name: String){
+        var key = firebaseDatabase.getReference("channel").push().key
+        firebaseDatabase.getReference("channel").child(key!!).setValue(name).addOnSuccessListener {
+            getChannels()
+        }
+    }
 }
