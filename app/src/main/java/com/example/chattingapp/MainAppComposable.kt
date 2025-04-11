@@ -5,9 +5,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.chattingapp.feature.auth.signin.SignInScreen
 import com.example.chattingapp.feature.auth.signup.SignUpScreen
 import com.example.chattingapp.feature.chat.ChatScreen
@@ -28,6 +30,14 @@ fun MainApp(){
             }
             composable("homescreen"){
                 HomeScreen(navController)
+            }
+            composable("chat/{channelId}", arguments = listOf(
+                navArgument("channelId"){
+                    type = NavType.StringType
+                }
+            )){
+                val channelId = it.arguments?.getString("channelId") ?: ""
+                ChatScreen(navController, channelId)
             }
         }
     }

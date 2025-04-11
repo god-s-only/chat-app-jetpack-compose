@@ -96,7 +96,7 @@ fun ChannelItems(text: String, navController: NavController, channel: Channel){
         .clip(RoundedCornerShape(16.dp))
         .background(Color.Red.copy(alpha = 0.3f))
         .clickable{
-            navController.navigate("channel/${channel.id}")
+            navController.navigate("chat/${channel.id}")
         }
         .padding(16.dp))
 }

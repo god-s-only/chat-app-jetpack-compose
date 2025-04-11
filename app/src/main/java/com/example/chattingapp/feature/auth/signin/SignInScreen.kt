@@ -72,9 +72,19 @@ fun SignInScreen(navController: NavController){
                         Color.White
                     )
             )
-            OutlinedTextField(value = email, onValueChange = {email = it}, label = {Text(text = "Email")}, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = email,
+                onValueChange = {email = it},
+                label = {Text(text = "Email")},
+                modifier = Modifier.fillMaxWidth()
+            )
 
-            OutlinedTextField(value = password, onValueChange = {password = it}, visualTransformation = PasswordVisualTransformation(),label = {Text(text = "Password")}, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = password,
+                onValueChange = {password = it},
+                visualTransformation = PasswordVisualTransformation(),
+                label = {Text(text = "Password")},
+                modifier = Modifier.fillMaxWidth()
+            )
+
             Spacer(
                 modifier = Modifier.height(20.dp)
             )
