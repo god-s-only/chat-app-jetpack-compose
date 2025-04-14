@@ -107,18 +107,18 @@ fun ChatBubble(message: Message){
     val isCurrentUser = message.senderId == Firebase.auth.currentUser?.uid
     val bubbleColor = if(isCurrentUser) Color.Blue else Color.Green
 
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp, horizontal = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.Bottom
+
     ) {
         val alignment = if(isCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
         Box(
-            contentAlignment = alignment, modifier = Modifier
+             modifier = Modifier
                 .padding(8.dp)
                 .background(color = bubbleColor, shape = RoundedCornerShape(8.dp))
+                 .align(alignment)
         ){
             Text(
                 text = message.message,
