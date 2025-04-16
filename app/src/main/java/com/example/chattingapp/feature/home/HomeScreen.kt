@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -44,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -109,7 +112,9 @@ fun HomeScreen(navController: NavController){
                 }
                 items(channels.value) { channel ->
                     Column {
-                        ChannelItems(channel.name, navController, channel)
+                        ChannelItems(channel.name){
+                            navController.navigate("chat/${channel.id}")
+                        }
                     }
                 }
             }
@@ -127,15 +132,32 @@ fun HomeScreen(navController: NavController){
     }
 }
 @Composable
-fun ChannelItems(text: String, navController: NavController, channel: Channel){
-    Text(text = text, modifier = Modifier.fillMaxSize()
-        .padding(8.dp)
-        .clip(RoundedCornerShape(16.dp))
-        .background(Color.Red.copy(alpha = 0.3f))
-        .clickable{
-            navController.navigate("chat/${channel.id}")
+fun ChannelItems(channelName: String, onClick: () -> Unit){
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(8.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(color = DarkGray)
+            .clickable{
+                onClick()
+            },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(5.dp)
+                .clip(CircleShape)
+                .size(70.dp)
+                .background(color = Color.Yellow.copy(alpha = 0.3f))
+        ){
+            Text(text = channelName[0].toString(), color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.align(
+                Alignment.Center),
+                style = TextStyle(
+                    fontSize = 30.sp
+                ))
         }
-        .padding(16.dp))
+        Text(text = channelName, color = Color.White, fontWeight = FontWeight.Bold, style = TextStyle(fontSize = 15.sp), modifier = Modifier.padding(16.dp))
+    }
 }
 @Composable
 fun AddChannelName(onChannelAdd: (String) -> Unit){
@@ -170,5 +192,5 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview(){
-    AddChannelName {  }
+    ChannelItems("Channel Name"){}
 }
