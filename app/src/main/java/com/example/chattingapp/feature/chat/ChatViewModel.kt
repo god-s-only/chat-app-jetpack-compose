@@ -1,5 +1,6 @@
 package com.example.chattingapp.feature.chat
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.chattingapp.model.Message
 import com.google.firebase.Firebase
@@ -21,7 +22,7 @@ class ChatViewModel @Inject constructor() : ViewModel(){
     var message = _message.asStateFlow()
     var database = Firebase.database
 
-    fun sendMessage(channelID: String, message: String){
+    fun sendMessage(channelID: String, message: String, image: String? = null){
         val message = Message(
             id = database.reference.push().key ?: UUID.randomUUID().toString(),
             senderId = Firebase.auth.currentUser?.uid ?: "",
@@ -29,9 +30,13 @@ class ChatViewModel @Inject constructor() : ViewModel(){
             System.currentTimeMillis(),
             Firebase.auth.currentUser?.displayName,
             senderImage = null,
-            imageUrl = null
+            imageUrl = image
         )
         database.reference.child("messages").child(channelID).push().setValue(message)
+    }
+
+    fun sendImageMessage(uri: Uri, channelID: String){
+        sendMessage(channelID, )
     }
 
     fun listenForMessages(channelID: String){

@@ -150,7 +150,7 @@ fun ChannelItems(channelName: String, onClick: () -> Unit){
                 .size(70.dp)
                 .background(color = Color.Yellow.copy(alpha = 0.3f))
         ){
-            Text(text = channelName[0].toString(), color = Color.White, textAlign = TextAlign.Center, modifier = Modifier.align(
+            Text(text = channelName[0].toString(), color = Color.White, modifier = Modifier.align(
                 Alignment.Center),
                 style = TextStyle(
                     fontSize = 30.sp
@@ -169,7 +169,7 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().background(Color.White),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
