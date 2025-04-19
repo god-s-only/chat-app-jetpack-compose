@@ -84,6 +84,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-storage")
     implementation("com.google.firebase:firebase-firestore")
-    kapt(libs.dagger.hilt.compiler)
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    implementation("io.github.jan-tennert.supabase:storage-kt:3.1.4")
     implementation(libs.coil)
 }

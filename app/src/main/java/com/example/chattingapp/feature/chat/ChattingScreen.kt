@@ -56,12 +56,13 @@ import com.example.chattingapp.ui.theme.DarkGray
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.example.chattingapp.R
+import com.example.chattingapp.feature.home.ChannelItems
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun ChatScreen(navController: NavController, channelId: String){
+fun ChatScreen(navController: NavController, channelId: String, channelName: String){
     var viewModel: ChatViewModel = hiltViewModel()
     Scaffold(containerColor = DarkGray) {
         val chooserDialog = remember {
@@ -123,6 +124,7 @@ fun ChatScreen(navController: NavController, channelId: String){
             val messages = viewModel.message.collectAsState()
             ChatMessages(
                 messages.value,
+                channelName,
                 onSendMessage = {
                     viewModel.sendMessage(channelId, it)
                 }
@@ -171,22 +173,26 @@ fun ContentSelectionDialog(onCameraSelected : () -> Unit, onGallerySelected : ()
 }
 
 @Composable
-fun ChatMessages(messages: List<Message>, onSendMessage : (String) -> Unit, onImageClicked : () -> Unit){
+fun ChatMessages(messages: List<Message>, channelName: String,onSendMessage : (String) -> Unit, onImageClicked : () -> Unit){
     var hideKeyboardController = LocalSoftwareKeyboardController.current
     var message by remember { mutableStateOf("") }
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize()
     ){
         LazyColumn {
+            item {
+                ChannelItems(channelName){}
+            }
+
             items(messages) { message ->
                 ChatBubble(message)
             }
         }
         Row(
             modifier = Modifier
+                .weight(1f)
                 .fillMaxWidth()
                 .background(DarkGray)
-                .align(Alignment.BottomCenter)
                 .padding(8.dp),
             verticalAlignment = Alignment.Bottom
         ) {

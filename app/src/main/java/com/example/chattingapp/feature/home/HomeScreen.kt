@@ -113,7 +113,7 @@ fun HomeScreen(navController: NavController){
                 items(channels.value) { channel ->
                     Column {
                         ChannelItems(channel.name){
-                            navController.navigate("chat/${channel.id}")
+                            navController.navigate("chat/${channel.id}&${channel.name}")
                         }
                     }
                 }
