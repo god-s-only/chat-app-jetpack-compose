@@ -1,6 +1,8 @@
 package com.example.chattingapp.feature.home
 
+import android.annotation.SuppressLint
 import android.view.RoundedCorner
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +37,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -54,16 +58,35 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.chattingapp.APPID
+import com.example.chattingapp.APPSIGN
+import com.example.chattingapp.MainActivity
+import com.example.chattingapp.feature.chat.CallButton
 import com.example.chattingapp.model.Channel
 import com.example.chattingapp.ui.theme.DarkGray
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.zegocloud.uikit.ZegoUIKit
+import com.zegocloud.uikit.service.defines.ZegoUIKitUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController){
     var homeViewModel = hiltViewModel<HomeViewModel>()
     var channels = homeViewModel.state.collectAsState()
+    val context = LocalActivity.current as MainActivity
     var addChannel = remember {
         mutableStateOf(false)
+    }
+    LaunchedEffect(Unit) {
+        Firebase.auth.currentUser?.let {
+            context.initZegoService(
+                appID = APPID,
+                appSign = APPSIGN,
+                userID = it.email!!,
+                userName = it.email!!
+            )
+        }
     }
     Scaffold(floatingActionButton = {
         Box(
@@ -78,6 +101,7 @@ fun HomeScreen(navController: NavController){
         }
     },
         containerColor = Color.Black) {
+
         Box(
             modifier = Modifier.padding(it).fillMaxSize()
         ){
@@ -133,31 +157,51 @@ fun HomeScreen(navController: NavController){
 }
 @Composable
 fun ChannelItems(channelName: String, onClick: () -> Unit){
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(8.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .background(color = DarkGray)
-            .clickable{
-                onClick()
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
+    Box(modifier = Modifier.fillMaxWidth()
+        .clip(RoundedCornerShape(16.dp))
+        .background(color = DarkGray)){
+            Row(
             modifier = Modifier
-                .padding(5.dp)
-                .clip(CircleShape)
-                .size(70.dp)
-                .background(color = Color.Yellow.copy(alpha = 0.3f))
-        ){
-            Text(text = channelName[0].toString(), color = Color.White, modifier = Modifier.align(
-                Alignment.Center),
-                style = TextStyle(
-                    fontSize = 30.sp
-                ))
+                .clickable{
+                    onClick()
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .clip(CircleShape)
+                    .size(70.dp)
+                    .background(color = Color.Yellow.copy(alpha = 0.3f))
+            ){
+                Text(text = channelName[0].toString(), color = Color.White, modifier = Modifier.align(
+                    Alignment.Center),
+                    style = TextStyle(
+                        fontSize = 30.sp
+                    ))
+            }
+            Text(text = channelName, color = Color.White, fontWeight = FontWeight.Bold, style = TextStyle(fontSize = 15.sp), modifier = Modifier.padding(16.dp))
         }
-        Text(text = channelName, color = Color.White, fontWeight = FontWeight.Bold, style = TextStyle(fontSize = 15.sp), modifier = Modifier.padding(16.dp))
+        Row(
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            CallButton(isVideoCall = true) {
+                it.setInvitees(
+                    mutableListOf(
+                        ZegoUIKitUser("", "")
+                    )
+                )
+            }
+            CallButton(isVideoCall = false) {
+                it.setInvitees(
+                    mutableListOf(
+                        ZegoUIKitUser("", "")
+                    )
+                )
+            }
+        }
     }
+
 }
 @Composable
 fun AddChannelName(onChannelAdd: (String) -> Unit){

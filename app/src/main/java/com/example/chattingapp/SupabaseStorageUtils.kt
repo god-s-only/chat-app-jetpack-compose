@@ -15,7 +15,7 @@ class SupabaseStorageUtils(var context: Context) {
         install(Storage)
     }
 
-    suspend fun uploadImage(uri: Uri): String? {
+    suspend fun uploadImage(uri: Uri) : String? {
         try {
             val extension = uri.path?.substringAfterLast(".") ?: "jpg"
             val fileName = "${UUID.randomUUID()}.$extension"
@@ -23,10 +23,11 @@ class SupabaseStorageUtils(var context: Context) {
             supabase.storage.from(BUCKET_NAME).upload(fileName, inputStream.readBytes())
             val publicUrl = supabase.storage.from(BUCKET_NAME).publicUrl(fileName)
             return publicUrl
-        }catch (e: Exception){
+        }catch (e : Exception){
             e.printStackTrace()
             return null
         }
+
     }
 
     companion object{

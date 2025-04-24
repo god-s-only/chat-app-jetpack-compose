@@ -46,23 +46,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.chattingapp.model.Message
 import com.example.chattingapp.ui.theme.DarkGray
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.example.chattingapp.R
 import com.example.chattingapp.feature.home.ChannelItems
+import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
 fun ChatScreen(navController: NavController, channelId: String, channelName: String){
+
     var viewModel: ChatViewModel = hiltViewModel()
     Scaffold(containerColor = DarkGray) {
         val chooserDialog = remember {
@@ -179,7 +183,7 @@ fun ChatMessages(messages: List<Message>, channelName: String,onSendMessage : (S
     Column(
         modifier = Modifier.fillMaxSize()
     ){
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1f)) {
             item {
                 ChannelItems(channelName){}
             }
@@ -265,6 +269,20 @@ fun ChatBubble(message: Message){
                 )
             }
 
+        }
+    }
+}
+
+@Composable
+fun CallButton(isVideoCall: Boolean, onClick: (ZegoSendCallInvitationButton) -> Unit){
+    AndroidView(factory = {context ->
+        val button = ZegoSendCallInvitationButton(context)
+        button.setIsVideoCall(isVideoCall)
+        button.resourceID = "zego_data"
+        button
+    }, modifier = Modifier.size(50.dp)){zegoCallButton ->
+        zegoCallButton.setOnClickListener{
+            onClick(zegoCallButton)
         }
     }
 }
