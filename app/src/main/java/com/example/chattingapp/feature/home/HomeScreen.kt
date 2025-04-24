@@ -67,6 +67,7 @@ import com.example.chattingapp.ui.theme.DarkGray
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.zegocloud.uikit.ZegoUIKit
+import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
 import com.zegocloud.uikit.service.defines.ZegoUIKitUser
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -136,8 +137,8 @@ fun HomeScreen(navController: NavController){
                 }
                 items(channels.value) { channel ->
                     Column {
-                        ChannelItems(channel.name){
-                            navController.navigate("chat/${channel.id}&${channel.name}")
+                        ChannelItems(channel.name, false, {navController.navigate("chat/${channel.id}&${channel.name}")}){
+
                         }
                     }
                 }
@@ -156,7 +157,7 @@ fun HomeScreen(navController: NavController){
     }
 }
 @Composable
-fun ChannelItems(channelName: String, onClick: () -> Unit){
+fun ChannelItems(channelName: String, showCallButtons: Boolean = false, onClick: () -> Unit, onCall: (ZegoSendCallInvitationButton) -> Unit){
     Box(modifier = Modifier.fillMaxWidth()
         .clip(RoundedCornerShape(16.dp))
         .background(color = DarkGray)){
@@ -182,24 +183,19 @@ fun ChannelItems(channelName: String, onClick: () -> Unit){
             }
             Text(text = channelName, color = Color.White, fontWeight = FontWeight.Bold, style = TextStyle(fontSize = 15.sp), modifier = Modifier.padding(16.dp))
         }
-        Row(
-            modifier = Modifier.align(Alignment.CenterEnd)
-        ) {
-            CallButton(isVideoCall = true) {
-                it.setInvitees(
-                    mutableListOf(
-                        ZegoUIKitUser("", "")
-                    )
-                )
-            }
-            CallButton(isVideoCall = false) {
-                it.setInvitees(
-                    mutableListOf(
-                        ZegoUIKitUser("", "")
-                    )
-                )
+        if(showCallButtons){
+            Row(
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                CallButton(isVideoCall = true) {
+
+                }
+                CallButton(isVideoCall = false) {
+
+                }
             }
         }
+
     }
 
 }
@@ -236,5 +232,5 @@ fun AddChannelName(onChannelAdd: (String) -> Unit){
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview(){
-    ChannelItems("Channel Name"){}
+    ChannelItems("Channel Name", false, {}, {})
 }

@@ -50,6 +50,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -60,6 +61,7 @@ import com.google.firebase.auth.auth
 import com.example.chattingapp.R
 import com.example.chattingapp.feature.home.ChannelItems
 import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton
+import com.zegocloud.uikit.service.defines.ZegoUIKitUser
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -129,6 +131,8 @@ fun ChatScreen(navController: NavController, channelId: String, channelName: Str
             ChatMessages(
                 messages.value,
                 channelName,
+                channelId = channelId,
+                viewModel = viewModel,
                 onSendMessage = {
                     viewModel.sendMessage(channelId, it)
                 }
@@ -177,7 +181,7 @@ fun ContentSelectionDialog(onCameraSelected : () -> Unit, onGallerySelected : ()
 }
 
 @Composable
-fun ChatMessages(messages: List<Message>, channelName: String,onSendMessage : (String) -> Unit, onImageClicked : () -> Unit){
+fun ChatMessages(messages: List<Message>, channelName: String, channelId: String, viewModel: ChatViewModel,onSendMessage : (String) -> Unit, onImageClicked : () -> Unit){
     var hideKeyboardController = LocalSoftwareKeyboardController.current
     var message by remember { mutableStateOf("") }
     Column(
@@ -185,7 +189,21 @@ fun ChatMessages(messages: List<Message>, channelName: String,onSendMessage : (S
     ){
         LazyColumn(modifier = Modifier.weight(1f)) {
             item {
-                ChannelItems(channelName){}
+                ChannelItems(channelName, true, {}, {callButton ->
+                    viewModel.getAllUsersEmail(channelID = channelId){
+                        val list = mutableListOf<ZegoUIKitUser>()
+                        it.forEach { email ->
+                            Firebase.auth.currentUser?.email?.let { em ->
+                                if(email != em){
+                                    list.add(ZegoUIKitUser(
+                                        email, email
+                                    ))
+                                }
+                            }
+                        }
+                        callButton.setInvitees(list)
+                    }
+                })
             }
 
             items(messages) { message ->
