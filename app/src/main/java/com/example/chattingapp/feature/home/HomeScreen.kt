@@ -187,12 +187,8 @@ fun ChannelItems(channelName: String, showCallButtons: Boolean = false, onClick:
             Row(
                 modifier = Modifier.align(Alignment.CenterEnd)
             ) {
-                CallButton(isVideoCall = true) {
-
-                }
-                CallButton(isVideoCall = false) {
-
-                }
+                CallButton(isVideoCall = true, onCall)
+                CallButton(isVideoCall = false, onCall)
             }
         }
 

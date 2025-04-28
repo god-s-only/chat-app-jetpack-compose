@@ -212,7 +212,6 @@ fun ChatMessages(messages: List<Message>, channelName: String, channelId: String
         }
         Row(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxWidth()
                 .background(DarkGray)
                 .padding(8.dp),
